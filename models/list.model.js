@@ -6,13 +6,13 @@ const listSchema = new Schema(
             type: String,
             required: true,
         },
-        coustomProperties: [
+        customProperties: [
             {
                 title: {
                     type: String,
                     required: true,
                 },
-                description: {
+                defaultValue: {
                     type: String,
                     required: true,
                 }
