@@ -4,28 +4,35 @@ const userSchema = new Schema(
     {
         name: {
             type: String,
-            required: true,
+            required: [true, 'Name is required'],
+            trim: true,
         },
-        emailId: {
+        email: {
             type: String,
-            required: true,
+            required: [true, 'Email is required'],
             unique: true,
+            lowercase: true,
+            trim: true,
+            match: [/.+\@.+\..+/, 'Please enter a valid email address'],
         },
         listId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "List",
-            required: true
+            required: [true, 'List ID is required'],
         },
         properties: {
             type: Map,
             of: String,
+            default: {},
         }
-
     },
     {
         timestamps: true
     }
-)
+);
+
+// Ensure unique index
+userSchema.index({ email: 1 }, { unique: true });
 
 const User = mongoose.model('User', userSchema);
 export default User;

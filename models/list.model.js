@@ -5,6 +5,7 @@ const listSchema = new Schema(
         title: {
             type: String,
             required: true,
+            unique: true, 
         },
         customProperties: [
             {
@@ -22,7 +23,9 @@ const listSchema = new Schema(
     {
         timestamps: true
     }
-)
+);
+
+listSchema.index({ title: 1 }, { unique: true });
 
 const List = mongoose.model('List', listSchema);
 export default List;
