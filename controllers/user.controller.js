@@ -122,6 +122,7 @@ const sendEmailToList = async (req, res) => {
     }
 
     try {
+        
         const list = await List.findById(listId);
         if (!list) {
             return res.status(404).json({ error: 'List not found' });
@@ -134,9 +135,11 @@ const sendEmailToList = async (req, res) => {
             await sendEmail(user.email, subject, personalizedBody, listId, user._id);
         }
 
-        res.status(200).json({ message: 'Emails sent successfully' });
+        res.status(200).json({ "Message": 'Emails sent successfully' });
+
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.log(error)
+        res.status(500).json({ "Error": "Error in sending mail , try again" });
     }
 }
 

@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: process.env.MAIL_SERVICE,
     secure: "true",
     port: process.env.SMTP_PORT,
     auth: {
@@ -13,8 +13,10 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+const BASE_URL = process.env.PRODUCTION_URL || `http://localhost:${process.env.PORT}`;
+
 export const sendEmail = async (to, subject, body, listId, userId) => {
-    const unsubscribeLink = `http://localhost:8000/api/users/${listId}/unsubscribe/${userId}`;
+    const unsubscribeLink = `${BASE_URL}/api/users/${listId}/unsubscribe/${userId}`;
     const htmlBody = `${body}<br><br><a href="${unsubscribeLink}">Unsubscribe</a>`;
 
     const mailOptions = {
