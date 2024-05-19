@@ -16,7 +16,7 @@ This project provides a RESTful API for managing lists and users, including crea
 ### List Endpoints
 
 - **Create List**
-  - **URL**: `/api/createList`
+  - **URL**: `/api/v1/list/createList`
   - **Method**: `POST`
   - **Description**: Create a new list with custom properties.
   - **Request Body**:
@@ -35,26 +35,30 @@ This project provides a RESTful API for managing lists and users, including crea
       ]
     }
     ```
+  ![Screenshot 2024-05-19 114126](https://github.com/AdityaKrSingh26/Bulk-Mailer-and-User-Managment/assets/128071145/aab25ab1-d0c6-445d-928e-6a0a2cee8501)
+  
 
 ### User Endpoints
 
 - **Add Users from CSV**
-  - **URL**: `/api/adduser/:listId`
+  - **URL**: `/api/v1/user/adduser/:listId`
   - **Method**: `POST`
   - **Description**: Add users to a list by uploading a CSV file.
   - **Request Params**: `listId` - ID of the list to add users to.
   - **Form Data**: `file` - CSV file containing user data.
+![Screenshot 2024-05-19 114511](https://github.com/AdityaKrSingh26/Bulk-Mailer-and-User-Managment/assets/128071145/8b52c1b4-1f1c-451c-ae96-43852ad81c6c)
+
 
 - **Unsubscribe User**
-  - **URL**: `/api/unsubscribe/:listId/:userId`
-  - **Method**: `POST`
+  - **URL**: `/api/v1/user/unsubscribe/:listId/:userId`
+  - **Method**: `get`
   - **Description**: Unsubscribe a user from a list.
   - **Request Params**: 
     - `listId` - ID of the list.
     - `userId` - ID of the user to unsubscribe.
 
 - **Send Emails to List**
-  - **URL**: `/api/sendemail/:listId`
+  - **URL**: `/api/v1/user/sendemail/:listId`
   - **Method**: `POST`
   - **Description**: Send personalized emails to users on a list.
   - **Request Params**: `listId` - ID of the list.
@@ -65,6 +69,8 @@ This project provides a RESTful API for managing lists and users, including crea
       "body": "Hello [name], your custom property is [Property1]."
     }
     ```
+![Screenshot 2024-05-19 115057](https://github.com/AdityaKrSingh26/Bulk-Mailer-and-User-Managment/assets/128071145/37878ef8-8cf3-4751-bc9f-852be7a2e2ff)
+
 
 ## Technologies Used
 
