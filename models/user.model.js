@@ -15,6 +15,10 @@ const userSchema = new Schema(
             trim: true,
             match: [/.+\@.+\..+/, 'Please enter a valid email address'],
         },
+        unsubscribed: {
+            type: Boolean,
+            default: false
+        },
         listId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "List",

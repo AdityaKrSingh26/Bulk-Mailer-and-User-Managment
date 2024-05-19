@@ -4,6 +4,7 @@ import csv from 'csv-parser';
 import multer from 'multer';
 import fs from 'fs';
 import { promisify } from 'util';
+import { sendEmail } from "../utlis/email.util.js";
 
 const unlinkAsync = promisify(fs.unlink);
 
@@ -47,7 +48,7 @@ const addUserFromCSV = async (req, res) => {
                 });
 
                 const newUser = await user.save();
-                if (!newUser) 
+                if (!newUser)
                     throw new Error("Error in creating user");
 
                 totalCount++;
@@ -84,7 +85,64 @@ const addUserFromCSV = async (req, res) => {
     }
 };
 
+
+const userUnsbscribe = async (req, res) => {
+    try {
+
+        const listId = req.params.listId;
+        const userId = req.params.userId;
+
+        if (!listId || !userId)
+            throw new Error("List ID and user ID are required");
+
+        const user = await User.findOne({ _id: userId, listId });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        user.unsubscribed = true;
+        await user.save();
+
+        res.status(200).json({ message: 'User unsubscribed successfully' });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: "Error in unsubscribing user" })
+    }
+}
+
+const sendEmailToList = async (req, res) => {
+    const listId = req.params.listId;
+    if (!listId) {
+        return res.status(400).json({ error: 'List ID is required' });
+    }
+    const { subject, body } = req.body;
+    if (!subject || !body) {
+        return res.status(400).json({ error: 'Subject and body are required' });
+    }
+
+    try {
+        const list = await List.findById(listId);
+        if (!list) {
+            return res.status(404).json({ error: 'List not found' });
+        }
+
+        const users = await User.find({ listId, unsubscribed: false });
+
+        for (const user of users) {
+            const personalizedBody = body.replace(/\[([^\]]+)\]/g, (_, propName) => user.properties.get(propName) || '');
+            await sendEmail(user.email, subject, personalizedBody, listId, user._id);
+        }
+
+        res.status(200).json({ message: 'Emails sent successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 export {
     uploadCSV,
-    addUserFromCSV
+    addUserFromCSV,
+    userUnsbscribe,
+    sendEmailToList
 };
