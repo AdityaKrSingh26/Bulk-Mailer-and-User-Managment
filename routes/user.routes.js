@@ -8,9 +8,9 @@ import {
 
 const router = Router()
 
-router.get("/adduser/:listId", uploadCSV, addUserFromCSV)
+router.post("/adduser/:listId", uploadCSV, addUserFromCSV)
 router.get("/unsubscribe/:listId/:userId", userUnsbscribe)
-router.get("/sendemail/:listId", sendEmailToList)
+router.post("/sendemail/:listId", sendEmailToList)
 
 
 export default router;

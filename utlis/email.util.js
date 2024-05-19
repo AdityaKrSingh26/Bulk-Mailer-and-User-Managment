@@ -16,20 +16,25 @@ const transporter = nodemailer.createTransport({
 const BASE_URL = process.env.PRODUCTION_URL || `http://localhost:${process.env.PORT}`;
 
 export const sendEmail = async (to, subject, body, listId, userId) => {
-    const unsubscribeLink = `${BASE_URL}/api/users/${listId}/unsubscribe/${userId}`;
-    const htmlBody = `${body}<br><br><a href="${unsubscribeLink}">Unsubscribe</a>`;
+    try {
+        const unsubscribeLink = `${BASE_URL}/api/v1/user/unsubscribe/${listId}/${userId}`;
+        const htmlBody = `${body}<br><br><a href="${unsubscribeLink}">Unsubscribe</a>`;
 
-    const mailOptions = {
-        from: process.env.SMTP_USER,
-        to,
-        subject,
-        html: htmlBody,
-    };
+        const mailOptions = {
+            from: process.env.SMTP_USER,
+            to,
+            subject,
+            html: htmlBody,
+        };
 
-    await transporter.sendMail(mailOptions, (error, emailResponse) => {
-        if (error)
-            throw error
-        else
-            console.log("SUCESSFULY SENT MAIL", emailResponse)
-    });
+        await transporter.sendMail(mailOptions, (error, emailResponse) => {
+            if (error)
+                throw error
+            else
+                console.log("SUCESSFULY SENT MAIL", emailResponse)
+        });
+
+    } catch (error) {
+        console.log(error)
+    }
 };
