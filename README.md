@@ -3,6 +3,8 @@
 
 This project provides a RESTful API for managing lists and users, including creating lists, uploading users from CSV files, unsubscribing users, and sending emails to users on a list. The project is built using Node.js, Express, and MongoDB.
 
+### Deployed Link: 
+https://bulk-mailer-and-user-managment.onrender.com
 
 ## Features
 
